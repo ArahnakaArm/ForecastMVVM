@@ -2,8 +2,8 @@ package com.example.forecastmvvm.data.db.unitlocalized
 
 interface UnitSpecificCurrentWeatherEntry {
     val temperature :Double
-    val conditionText : String
-    val condtionIconUrl : String
+    val weather_descriptions : String
+    val weather_icons : String
     val windspeed : Double
     val windDiretion : String
     val precipitationVolume : Double

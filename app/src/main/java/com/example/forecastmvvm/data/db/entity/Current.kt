@@ -4,6 +4,7 @@ package com.example.forecastmvvm.data.db.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 
 const val CURRENT_WEATHER_ID = 0
@@ -14,8 +15,14 @@ data class Current(
     val cloudcover: Int,
     @SerializedName("feelslike")
     val feelslike: Int,
-    @Embedded(prefix = "condition_")
-    val condition: Condition,
+    @TypeConverters(Converters::class)
+    @SerializedName("weather_descriptions")
+    val weather_descriptions: List<String>,
+    @TypeConverters(Converters::class)
+    @SerializedName("weather_icons")
+    val weather_icons: List<String>,
+    /*@Embedded(prefix = "condition_")
+    val condition: Condition,*/
     @SerializedName("humidity")
     val humidity: Int,
     @SerializedName("observation_time")

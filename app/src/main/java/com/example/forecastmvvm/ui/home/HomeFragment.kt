@@ -15,12 +15,20 @@ import com.example.forecastmvvm.data.network.ConnectivityInterceptorImpl
 import com.example.forecastmvvm.data.network.WeatherNetworkDataSource
 import com.example.forecastmvvm.data.network.WeatherNetworkDataSourceImpl
 import com.example.forecastmvvm.data.network.response.CurrentWeatherResponse
+import com.example.forecastmvvm.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
-class HomeFragment : Fragment() {
+class HomeFragment : ScopedFragment(),KodeinAware {
+    override val kodein by closestKodein()
+
+    private val viewModelFactory : CurrentWeatherViewModelFactory by instance()
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -30,7 +38,7 @@ class HomeFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
+                ViewModelProviders.of(this,viewModelFactory).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
        /* val textView: TextView = root.findViewById(R.id.text_home)
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -41,7 +49,7 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val apiService = ApixuWeatherApiService(ConnectivityInterceptorImpl(this.context!!))
+      /*  val apiService = ApixuWeatherApiService(ConnectivityInterceptorImpl(this.context!!))
         val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
 
         weatherNetworkDataSource.downloadedCurrentWeather.observe(this, Observer {
@@ -50,6 +58,16 @@ class HomeFragment : Fragment() {
 
         GlobalScope.launch(Dispatchers.Main) {
             weatherNetworkDataSource.fetchCurrentWeather("New York")
-        }
+        }*/
+
+        bindUI()
+    }
+    private fun bindUI() = launch{
+        val currentWeather = homeViewModel.weather.await()
+        currentWeather.observe(this@HomeFragment , Observer {
+            if (it == null) return@Observer
+
+            text_home.text = it.toString()
+        })
     }
 }
