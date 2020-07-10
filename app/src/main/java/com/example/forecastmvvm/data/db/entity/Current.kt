@@ -31,8 +31,8 @@ data class Current(
     val precip: Double,
     @SerializedName("pressure")
     val pressure: Int,
-    @SerializedName("temparature")
-    val temparature: Int,
+    @SerializedName("temperature")
+    val temperature: Int,
     @SerializedName("uv_index")
     val uvIndex: Int,
     @SerializedName("visibility")

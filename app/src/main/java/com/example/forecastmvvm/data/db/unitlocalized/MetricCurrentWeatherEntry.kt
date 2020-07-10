@@ -3,7 +3,7 @@ package com.example.forecastmvvm.data.db.unitlocalized
 import androidx.room.ColumnInfo
 
 data class MetricCurrentWeatherEntry(
-    @ColumnInfo(name = "temparature")
+    @ColumnInfo(name = "temperature")
     override val temperature: Double,
     @ColumnInfo(name = "weather_descriptions")
     override val weather_descriptions: String,
@@ -14,7 +14,7 @@ data class MetricCurrentWeatherEntry(
     @ColumnInfo(name = "wind_dir")
     override val windDiretion: String,
     @ColumnInfo(name = "precip")
-    override val precipitationVolume: Double,
+    override val precip: Double,
     @ColumnInfo(name = "feelslike")
     override val feelLikeTemperature: Double,
     @ColumnInfo(name = "visibility")
